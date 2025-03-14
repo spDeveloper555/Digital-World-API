@@ -1,0 +1,7 @@
+{
+    "environment": "dev",
+    "dev": {
+        "uri": "mongodb://localhost:27017/",
+        "db": "digital_world"
+    }
+}
