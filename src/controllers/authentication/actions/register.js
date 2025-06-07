@@ -2,7 +2,7 @@ class RegisterAction {
     async registerInitProcess(scope) {
         try {
             let formData = scope.req.body;
-            let requireField = ['firstName', 'lastName', 'email', 'password', 'mobileNo'];
+            let requireField = ['firstName', 'lastName', 'email', 'password'];
             let ValidResult = scope.utility.formValidation(formData, requireField);
             if (!ValidResult['isValid']) throw ValidResult;
             let userID = await scope.db.randomID('cash_management', 'userID')
