@@ -10,12 +10,13 @@ class LoginAction {
                 email: formData['email'],
                 password: scope.utility.encrypt(formData['password'])
             }
-            let options = { projection: { status: 0, createdAt: 0, password: 0, _id: 0 } }
+            let options = { projection: { status: 0, createdAt: 0, password: 0, _id: 0 } };
             let userData = await scope.db.findOne(findQuery, 'user', options).catch((error) => { throw error });
             if (userData?.['email'] && userData?.['userID']) {
                 let tokenObj = {
                     email: userData['email'],
                     userID: userData['userID'],
+                    userDataID: userData['userDataID'],
                     createdAt: Date.now()
                 }
                 let token = scope.utility.encrypt(JSON.stringify(tokenObj));

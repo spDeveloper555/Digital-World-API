@@ -1,0 +1,15 @@
+{
+    "sideNavList": [
+      {
+        "icon": "bi bi-house",
+        "name": "Home",
+        "url": "/home"
+      },
+      {
+        "icon": "bi bi-pie-chart",
+        "name": "Netgroup Addition",
+        "url": "/netgroupAddtion"
+      }
+    ]
+  }
+  

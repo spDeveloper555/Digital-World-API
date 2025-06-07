@@ -5,12 +5,15 @@ class CreateUserAction {
             let requireField = ['firstName', 'lastName', 'email', 'password'];
             let ValidResult = scope.utility.formValidation(formData, requireField);
             if (!ValidResult['isValid']) throw ValidResult;
+            let userID = await scope.db.randomID('cash_management', 'userID');
             let finalData = {
                 firstName: formData['firstName'],
                 lastName: formData['lastName'],
                 email: formData['email'],
                 password: scope.utility.encrypt(formData['password']),
-                userID: scope.utility.generateId(),
+                userID: userID,
+                userDataID: scope.utility.generateId(),
+                mobileNo: formData['mobileNo'],
                 address: formData['address'],
                 city: formData['city'],
                 state: formData['state'],

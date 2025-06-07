@@ -2,6 +2,7 @@ const crypto = require('crypto');
 const algorithm = 'aes-256-cbc';
 const key = 'rzHNUsRDPBleSuYAaNckWusZibFnGpBg';
 const iv = 'GUwX6SnJchXrcMOs';
+const generatedIds = new Set();
 class UtilityService {
     formValidation(data, manitoryFields) {
         let fields = Object.keys(data);

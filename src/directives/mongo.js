@@ -106,7 +106,6 @@ class MongroDriver {
     });
   }
 
-
   insertMany(data = {}, collectionName = "", options = {}) {
     return new Promise((resolve, reject) => {
       (async () => {
@@ -157,15 +156,8 @@ class MongroDriver {
           const db = this.client.db(this.dbName);
           const collection = db.collection(collectionName);
 
-          collection.updateOne(
-            query,
-            { $set: data },
-            { upsert: true },
-            (err, result) => {
-              if (err) reject(err);
-              resolve(result?.["result"]["ok"]);
-            }
-          );
+          let result = await collection.updateOne(query, { $set: data }, { upsert: true });
+          resolve(result);
         } catch (error) {
           console.log("update Error", error);
           reject(error);
@@ -271,7 +263,7 @@ class MongroDriver {
     }
 
   }
-  // sleep(tms)
+
   findAllData(searchQuery, collectionName, options, count) {
     return new Promise((resolve, reject) => {
       (async () => {
@@ -379,6 +371,35 @@ class MongroDriver {
           });
       })()
     });
+  }
+  async randomID(collectionName = "", field = "uniqueId", length = 6) {
+    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+    const generateId = () => {
+      let result = '';
+      for (let i = 0; i < length; i++) {
+        result += chars.charAt(Math.floor(Math.random() * chars.length));
+      }
+      return result;
+    };
+
+    try {
+      if (!this.isConnected()) await this.dbInit();
+      const db = this.client.db(this.dbName);
+      const collection = db.collection(collectionName);
+
+      let newId;
+      let exists = true;
+
+      while (exists) {
+        newId = generateId();
+        exists = await collection.findOne({ [field]: newId });
+      }
+
+      return newId;
+    } catch (error) {
+      console.error("randomID error:", error);
+      throw error;
+    }
   }
 };
 module.exports = MongroDriver;

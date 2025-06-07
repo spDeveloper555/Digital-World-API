@@ -2,8 +2,8 @@ const nodemailer = require('nodemailer');
 const mailConfig = {
     host: "smtp.mailgun.org",
     port: 465,
-    username: "sppromantus@gmail.com",
-    pssword: "xhhb irrn hktu gmnh"
+    username: "suryaprakash555dev@gmail.com",
+    pssword: "dxzp bpzl wrcd ostq" //"xhhb irrn hktu gmnh"
 };
 
 const smtpMail = async (options) => {
@@ -27,7 +27,14 @@ const smtpMail = async (options) => {
             // Email options
             const mailOptions = {
                 from: '"Digital World" <sppromantus@gmail.com>',
-                ...options
+                ...options,
+                attachments: [
+                    {
+                        filename: 'sakthi e seva final.png',
+                        path: 'src/assets/image/sakthi e seva final.png',
+                        cid: 'logoimage'
+                    }
+                ]
             };
             // Send the email
             transporter.sendMail(mailOptions, (error, info) => {
