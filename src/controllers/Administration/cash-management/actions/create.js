@@ -5,7 +5,7 @@ class CreateCashManageAction {
             let requireField = ['invoice_details'];
             let ValidResult = scope.utility.formValidation(formData, requireField);
             if (!ValidResult['isValid']) throw ValidResult;
-            let cashDetailsID = await scope.db.randomID('cash_management', 'paymentID');
+            let cashDetailsID = await scope.db.generateOrderID('cash_management', 'paymentID');
             for (let item of formData['invoice_details']) {
                 let finalData = {
                     paymentID: cashDetailsID,

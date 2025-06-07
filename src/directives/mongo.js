@@ -401,5 +401,33 @@ class MongroDriver {
       throw error;
     }
   }
+  async generateOrderID(collectionName = "", field = "uniqueId", prefix = "SAK") {
+    try {
+      if (!this.isConnected()) await this.dbInit();
+      const db = this.client.db(this.dbName);
+      const collection = db.collection(collectionName);
+
+      const latestDoc = await collection
+        .find({ [field]: { $regex: `^${prefix}-\\d+$` } })
+        .sort({ [field]: -1 })
+        .limit(1)
+        .toArray();
+
+      let nextNumber = 1;
+
+      if (latestDoc.length > 0) {
+        const latestId = latestDoc[0][field];
+        const parts = latestId.split("-");
+        const number = parseInt(parts[1], 10);
+        nextNumber = number + 1;
+      }
+
+      return `${prefix}-${nextNumber}`;
+    } catch (error) {
+      console.error("randomID error:", error);
+      throw error;
+    }
+  }
+
 };
 module.exports = MongroDriver;
