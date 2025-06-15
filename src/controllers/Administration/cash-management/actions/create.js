@@ -35,7 +35,8 @@ class CreateCashManageAction {
                 name: formData['invoice_details'][0]['customerName'],
             }
             await scope.db.update(query, updateData, 'customer_management').catch((error) => { throw error })
-            let customerInfo = await scope.db.findOne(query, 'customer_management', { projection: { name: 1, email: 1, mobileNo: 1, address: 1, city: 1, state: 1, pincode: 1 } }).catch((error) => { throw error })
+            let customerInfo = await scope.db.findOne(query, 'customer_management', { projection: { _id: 0, name: 1, email: 1, mobileNo: 1, address: 1, city: 1, state: 1, pincode: 1 } }).catch((error) => { throw error })
+            if(Object.keys(customerInfo).length == 0) customerInfo = { mobileNo: formData['invoice_details'][0]['customerMobileNo']}
             let response = {
                 status: 'success',
                 invoiceID: cashDetailsID,
