@@ -11,11 +11,14 @@ class CreateCashManageAction {
                     paymentID: cashDetailsID,
                     cashDataID: scope.utility.generateId(),
                     service: item['service'],
+                    subService: item['subService'] ?? '',
+                    ReferenceID: item['ReferenceID'] ?? '',
                     paymentType: item['paymentType'],
                     date: item['date'],
                     amount: item['amount'] ?? '',
-                    customerID: item['customerID'] ?? '',
+                    paymentMode: item['paymentMode'] ?? '',
                     processOperator: item['processOperator'],
+                    customerName: item['customerName'],
                     customerMobileNo: item['customerMobileNo'],
                     status: 1,
                     createdAt: Date.now()
@@ -26,9 +29,13 @@ class CreateCashManageAction {
                 status: 1,
                 mobileNo: formData['invoice_details'][0]['customerMobileNo']
             };
-
+            let updateData = {
+                status: 1,
+                mobileNo: formData['invoice_details'][0]['customerMobileNo'],
+                name: formData['invoice_details'][0]['customerName'],
+            }
+            await scope.db.update(query, updateData, 'customer_management').catch((error) => { throw error })
             let customerInfo = await scope.db.findOne(query, 'customer_management', { projection: { name: 1, email: 1, mobileNo: 1, address: 1, city: 1, state: 1, pincode: 1 } }).catch((error) => { throw error })
-            if(Object.keys(customerInfo).length == 0) customerInfo = { mobileNo: formData['invoice_details'][0]['customerMobileNo']}
             let response = {
                 status: 'success',
                 invoiceID: cashDetailsID,

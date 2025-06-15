@@ -13,7 +13,9 @@ class CashDetailListAction {
                     { service: { $regex: search, $options: 'i' } },
                     { paymentType: { $regex: search, $options: 'i' } },
                     { date: { $regex: search, $options: 'i' } },
-                    { amount: { $regex: search, $options: 'i' } }
+                    { amount: { $regex: search, $options: 'i' } },
+                    { customerName: { $regex: search, $options: 'i' } },
+                    { customerMobileNo: { $regex: search, $options: 'i' } }
                 ]
             }
             let page = 1;

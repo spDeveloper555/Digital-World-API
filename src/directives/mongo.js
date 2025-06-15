@@ -409,7 +409,7 @@ class MongroDriver {
 
       const latestDoc = await collection
         .find({ [field]: { $regex: `^${prefix}-\\d+$` } })
-        .sort({ [field]: -1 })
+        .sort({ 'createdAt': -1 })
         .limit(1)
         .toArray();
 

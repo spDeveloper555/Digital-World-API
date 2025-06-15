@@ -17,6 +17,8 @@ class UpdateCashManageAction {
                 amount: formData['amount'] ?? '',
                 borrowerDetails: formData['customerID'] ?? '',
                 processOperator: formData['processOperator'],
+                subService: item['subService'] ?? '',
+                customerName: item['customerName'],
                 updatedAt: Date.now()
             };
             await scope.db.update(findQuery, finalData, 'cash_management').catch((error) => { throw error })
