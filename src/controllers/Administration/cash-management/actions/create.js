@@ -29,14 +29,20 @@ class CreateCashManageAction {
                 status: 1,
                 mobileNo: formData['invoice_details'][0]['customerMobileNo']
             };
-            let updateData = {
-                status: 1,
-                mobileNo: formData['invoice_details'][0]['customerMobileNo'],
-                name: formData['invoice_details'][0]['customerName'],
-            }
-            await scope.db.update(query, updateData, 'customer_management').catch((error) => { throw error })
             let customerInfo = await scope.db.findOne(query, 'customer_management', { projection: { _id: 0, name: 1, email: 1, mobileNo: 1, address: 1, city: 1, state: 1, pincode: 1 } }).catch((error) => { throw error })
-            if(Object.keys(customerInfo).length == 0) customerInfo = { mobileNo: formData['invoice_details'][0]['customerMobileNo']}
+            if (Object.keys(customerInfo).length == 0) {
+                let customerDetailsID = await scope.db.randomID('customer_management', 'customerID')
+                let customerData = {
+                    mobileNo: formData['invoice_details'][0]['customerMobileNo'],
+                    customerID: customerDetailsID,
+                    customerDataID: scope.utility.generateId(),
+                    status: 1,
+                    createdAt: Date.now()
+                };
+                if(formData['invoice_details'][0]?.['customerName']) customerData['name'] = formData['invoice_details'][0]['customerName'];
+                await scope.db.insert(customerData, 'customer_management').catch((error) => { throw error });
+                customerInfo = customerData;
+            }
             let response = {
                 status: 'success',
                 invoiceID: cashDetailsID,
