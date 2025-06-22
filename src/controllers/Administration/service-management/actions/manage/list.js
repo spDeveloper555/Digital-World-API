@@ -12,18 +12,12 @@ class ManageServiceListAction {
                 status: 'success',
             }
             if (formData?.['isList']) {
-                response['services'] = serviceDetails['services'] || [{ service: '', amount: '' }];
-                response['subServices'] = serviceDetails['subServices'] || [{ subService: '' }];
-            } else {
-                if(serviceDetails?.['services'] && serviceDetails['services'].length > 0) {
-                    response['services'] = serviceDetails['services'].reduce((acc, item) => {
-                        acc[item.service] = item.amount;
-                        return acc;
-                    }, {});
-                }
-                if(serviceDetails?.['subServices'] && serviceDetails['subServices'].length > 0) {
-                    response['subServices'] = serviceDetails['subServices'].map(item => item.subService);
-                }
+                response['services'] = serviceDetails['services'] || [{ service: '', subServices: [], amount: '' }];
+            } else if (serviceDetails?.['services'] && serviceDetails['services'].length > 0) {
+                response['services'] = serviceDetails['services'].reduce((acc, item) => {
+                    acc[item.service] = { amount: item.amount, subservices: item.subservices ?? [] };
+                    return acc;
+                }, {});
             }
 
             scope.res.status(201).json(response);
